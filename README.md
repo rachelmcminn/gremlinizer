@@ -10,11 +10,17 @@ npm start
 Then, navigate to ```https://localhost:8080``` to display the application.
 
 Click "create a game" on a host device (a TV, computer, or tablet) - a game ID will appear for users to join the game
+
 Keep this screen displayed for everyone to see - this is where the prompts appear!
+
 A QR code will appear, and players can scan it to head to the site or type in gremlinizer.herokuapp.com
+
 Players should click on "join a game" and then enter their name and the game ID that appears on the host screen
+
 Wait for everyone to enter the game room
+
 Choose which type of game you want to play to start the game (song, recipe, or story)
+
 Play!
 
 ## Gameplay
