@@ -3,6 +3,11 @@
 
 ; 
 jQuery(function($){    
+    // global background music
+    var backgroundMusic = new Audio('audio/background-track.wav');
+    backgroundMusic.loop = true; // loop continuously
+    backgroundMusic.volume = 0.5; // optional, adjust volume
+
     'use strict';
     //var playerses = 99;
     var startGame = false;
@@ -45,32 +50,21 @@ jQuery(function($){
         },
 
         onConnected : function() {
-            //console.log("IO");
-            App.mySocketID = IO.socket.id;
-            //console.log(App.mySocketID + ' myRole: ' + App.myRole);
-            
+            App.mySocketID = IO.socket.id;            
         },
 
         onNewGameCreated : function(data) {
-            //console.log('onNewGame Create calls game init');
-            //console.log(data);
             App.Host.gameInit(data);
         },
 
 
         playerJoinedRoom : function(data) {
-            //console.log('player joined room called');
-            //console.log('my role: ' + App.myRole);
-            
             App[App.myRole].updateWaitingScreen(data);
         },
 
         numPlayerUpdate : function(data) {
-            
-            //console.log('my role: ' + App.myRole);
             App.Host.numPlayersInRoom = data.numPlayer -1;
             console.log('player playersUpdated: ' + App.Host.numPlayersInRoom);
-            //playerses = data.numPlayer;
 
             var dataIn = {
                 gameID: App.gameID,
@@ -84,7 +78,6 @@ jQuery(function($){
 
 
         beginNewGame : function(data) {
-
             App[App.myRole].gameCountdown(data);
         },
 
@@ -94,7 +87,6 @@ jQuery(function($){
 
 
         storePlayerAnswer : function(data) {
-            //console.log('storePlayer helper function')
             if(App.myRole === 'Host') {
                 App.Host.storeAnswer(data);
             }
@@ -142,7 +134,6 @@ jQuery(function($){
             App.cacheElements(); //refernece to on-screen html elements
             App.bindEvents();
             App.showInitScreen();
-
             
         },
 
@@ -173,15 +164,12 @@ jQuery(function($){
 
             //PLAYER
             App.$doc.on('click', '#btnJoinGame', App.Player.onJoinClick);
-            
             App.$doc.on('click', '#btnVote', App.Player.iVoted);
             App.$doc.on('click', '#btnSubmit',App.Player.onPlayerSubmitClick);
             App.$doc.on('click', '#btnJoinWaitingRoom', App.Player.onJoinWaitingRoomClick);
             App.$doc.on('click', '#btnPlayerStartsGame', App.Player.onPlayerStartGameClick);
             App.$doc.on('click', '#btnInstructions', App.Player.onInstructionClick);
             App.$doc.on('click', '#btnTitleScreen', App.Player.onTitleScreenClick);
-            //App.$doc.on('click', '#btnRestart', App.onRestartClick);
-
         },
 
         //show intial title screen
@@ -202,26 +190,20 @@ jQuery(function($){
 
             //handler for "create game" button on title screen
             onCreateClick: function () {
-                //console.log('clicked create a game');
-                //console.log(IO);
-
                 IO.socket.emit('hostCreateNewGame');
-                // document.getElementById('success').play();
-                // var buttonClick = new Audio('audio/misc_menu.wav');
-                // buttonClick.play();
+                // Play background music if it's not already playing
+                if (backgroundMusic.paused) {
+                    backgroundMusic.play().catch(err => {
+                    console.log("Music can't autoplay yet. User interaction required.");
+                });
+    }
 
-                var backgroundMusic = new Audio('audio/background-track.wav');
-                backgroundMusic.play();
 
-               
             },
 
             onStartClick: function () {
-                //console.log('clicked start a game' + startGame);
-                //console.log(IO);
                 var $btn = $(this);
                 var promptChoice = $btn.html();
-                //console.log('button prompt is ' + promptChoice);
 
                 startGame = true;
                 if(startGame){
@@ -336,7 +318,6 @@ jQuery(function($){
                 //console.log(App.Host.players[i].gremStatus + ' had timeSlow on store: ' + data.timesSlow);
                 
                 App.Host.rounds.push(data);
-                //console.log(this.rounds[0].score);
                 App.Host.answerCheck();
                 
                 //console.log(App.Host.gameID);
@@ -616,8 +597,6 @@ jQuery(function($){
                 var gremLett2= ["S", "D", "V", "X", "F"];
                 App.$gameArea.html(App.$templatePlayerScreen);
                 App.currentRound = data.round;
-                //console.log (data.gremlins[0]);
-                //console.log (App.mySocketID);
                 for (let i =0; i < data.gremlins.length; i++) {
                     if (data.gremlins[i] == App.mySocketID) {
                         document.getElementById('laugh').play();
@@ -659,16 +638,10 @@ jQuery(function($){
                 var $ltr1 = $("#gremlinizedLTRA");
                 var $ltr2 = $("#gremlinizedLTRB");
 
-                
-                //console.log($sub);
+
                 var answer = $sub.val(); // The tapped word
                 var l1 = $ltr1.html();
                 var l2 = $ltr2.html();
-                // console.log('answer' + answer + 'L1, L2'+ l1 + l2);
-                // console.log(answer.includes(l1));
-                // console.log(answer.includes(l2));
-                // console.log(typeof l1);
-                // console.log(l1 === '');
                 var chkAnswer = answer.toUpperCase();
 
                 if (!(chkAnswer.includes(l1) || chkAnswer.includes(l2))|| l1 === '') {
@@ -787,9 +760,7 @@ jQuery(function($){
                     return;
                 }
             }
-
         }
-
     };
 
 
