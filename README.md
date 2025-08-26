@@ -3,7 +3,12 @@
 THE GREMLINIZER is an online, social word game that pushes players to think fast & avoid the Gremlin’s characTERROR
 
 ## Set Up
-To start, head to gremlinizer.herokuapp.com
+To start, head to the root directory and run
+```
+npm start
+```
+Then, navigate to ```https://localhost:8080``` to display the application.
+
 Click "create a game" on a host device (a TV, computer, or tablet) - a game ID will appear for users to join the game
 Keep this screen displayed for everyone to see - this is where the prompts appear!
 A QR code will appear, and players can scan it to head to the site or type in gremlinizer.herokuapp.com
