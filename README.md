@@ -5,6 +5,10 @@ THE GREMLINIZER is an online, social word game that pushes players to think fast
 ## Set Up
 To start, head to the root directory and run
 ```
+npm install
+```
+then, run
+```
 npm start
 ```
 Then, navigate to ```https://localhost:8080``` to display the application.
